@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        // vector<char> gene={'A','C','G','T'};
+        unordered_set<string> ba(wordList.begin(),wordList.end());
+        unordered_set<string> v;
+        queue<string> q;
+
+        q.push(beginWord);
+        v.insert(beginWord);
+
+        int l=1;
+        while(!q.empty()){
+            int size = q.size(); 
+            for (int k = 0; k < size; k++) {
+                string curr = q.front();
+                q.pop();
+                for (int j = 0; j < curr.length(); j++) { 
+                    for (int i=0;i<26;i++) {
+                        char g='a'+i;
+                        if (curr[j] == g) continue; 
+                        string new_c = curr;
+                        new_c[j] = g;
+                        if (ba.count(new_c) != 0) {
+                            if (endWord == new_c) {
+                                return l + 1;
+                            }
+                            if (v.count(new_c) == 0) {
+                                q.push(new_c);
+                                v.insert(new_c);
+                            }
+                        }
+                    }
+                }
+            }
+            l++;
+        }
+        return 0;
+    }
+};
