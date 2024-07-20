@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> price;
+    int n;
+    int dp[1001][2][101];
+    int solve(int i,int state,int time){
+        if(i>=n || time<=0){
+            return 0;
+        }
+        if(dp[i][state][time]!=-1){
+            return dp[i][state][time];
+        }
+        if(state==1){
+            return dp[i][state][time]=max(solve(i+1,0,time)-price[i],solve(i+1,1,time));
+        }else{
+            return dp[i][state][time]=max(solve(i+1,1,time-1)+price[i],solve(i+1,0,time));
+        }
+    }
+    int maxProfit(int k, vector<int>& prices) {
+        price=prices;
+        memset(dp,-1,sizeof(dp));
+        n=prices.size();
+        return solve(0,1,k);
+    }
+};
