@@ -1,0 +1,62 @@
+class Solution {
+private:
+    void removeDoubleSpaces(std::string& str) {
+        size_t found;
+        while ((found = str.find("  ")) != std::string::npos) {
+            str.replace(found, 2, " ");
+        }
+    }
+
+    string convertLessThanThousand(int num) {
+        vector<string> ones = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
+        vector<string> tens = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
+
+        string res;
+
+        int hundred = num / 100;
+        int remainder = num % 100;
+
+        if (hundred > 0) {
+            res += ones[hundred] + " Hundred ";
+        }
+
+        if (remainder < 20) {
+            res += ones[remainder];
+        } else {
+            int ten = remainder / 10;
+            int one = remainder % 10;
+            res += tens[ten] + " " + ones[one];
+        }
+
+        return res;
+    }
+
+public:
+    string numberToWords(int num) {
+        if (num == 0) {
+            return "Zero";
+        }
+
+        vector<string> thousands = {"", "Thousand", "Million", "Billion"};
+
+        string res;
+        int index = 0;
+
+        while (num > 0) {
+            if (num % 1000 != 0) {
+                res = convertLessThanThousand(num % 1000) + " " + thousands[index] + " " + res;
+            }
+            num /= 1000;
+            index++;
+        }
+
+        // Remove leading and trailing spaces
+        while (res.back() == ' ') {
+            res.pop_back();
+        }
+
+        removeDoubleSpaces(res);
+
+        return res;
+    }
+};
